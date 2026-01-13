@@ -70,6 +70,8 @@ Initially, we established a baseline model with conservative parameter settings 
 * **Epochs**: 300
 * **Loss Function**: BCELoss (Binary Cross Entropy Loss)
 
+![image](IMG/Baseline_Performance.png)
+
 **Issues with Baseline:**
 Due to the small Batch Size (only 1), the gradient oscillated severely during training, leading to an unstable Loss curve. Additionally, the fixed learning rate made it difficult for the model to converge further in the later stages, easily getting stuck in local optima with slow improvement in validation IoU.
 
@@ -101,7 +103,7 @@ After the above tuning, the determined optimal hyperparameter combination is as 
 | **Optimizer** | Adam | Default momentum |
 | **LR Strategy** | CosineAnnealingLR | $10^{-3} \to 10^{-6}$ |
 | **Batch Size** | 32 | |
-| **Epochs** | 300 | IoU stabilizes after approx. 150 epochs |
+| **Epochs** | 400 | IoU stabilizes after approx. 150 epochs |
 | **Loss Function** | BCELoss | Monitored with Jaccard Index |
 
 Under this configuration, the model finally achieved an average IoU of over **0.9** on the test set, and the Loss curve (as shown in Figure 1) demonstrated good convergence without obvious overfitting.
