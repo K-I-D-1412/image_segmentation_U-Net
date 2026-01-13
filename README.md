@@ -71,6 +71,7 @@ Initially, we established a baseline model with conservative parameter settings 
 * **Loss Function**: BCELoss (Binary Cross Entropy Loss)
 
 ![image](IMG/Baseline_Performance.png)
+![image](IMG/Baseline_Results.png)
 
 **Issues with Baseline:**
 Due to the small Batch Size (only 1), the gradient oscillated severely during training, leading to an unstable Loss curve. Additionally, the fixed learning rate made it difficult for the model to converge further in the later stages, easily getting stuck in local optima with slow improvement in validation IoU.
@@ -83,6 +84,9 @@ To address the convergence difficulty in later stages, we introduced a dynamic l
     * **Minimum Learning Rate (eta_min)**: Set to $1 \times 10^{-6}$ to ensure fine-grained search for the optimal solution with minimal steps in the later stages.
     * **Period (T_max)**: Set to 300, consistent with the total number of Epochs.
 
+![image](IMG/LR_Performance.png)
+![image](IMG/LR_Results.png)
+
 **Optimization Effect:**
 After introducing the scheduler, the learning rate decreased in a cosine function pattern with Epochs. Experiments showed that the Loss curve became smoother in the later stages, and the validation IoU stably broke through the 0.9 bottleneck.
 
@@ -92,6 +96,9 @@ After introducing the scheduler, the learning rate decreased in a cosine functio
     1.  The dataset images are resized to $128 \times 128$, occupying little GPU memory. Increasing Batch Size fully utilizes GPU parallel computing capabilities.
     2.  A larger Batch Size provides more accurate gradient estimation, reducing random noise during training and clarifying the model convergence direction.
 * **Data Loading Optimization**: To accommodate the larger Batch Size and reduce I/O bottlenecks, we added a caching mechanism (`use_cache=True`) in `BalloonDataset`. This saves preprocessed images and masks as `.npz` files, significantly reducing the time consumption per Epoch.
+
+![image](IMG/Final_Performance.png)
+![image](IMG/Final_Results.png)
 
 ### 5.4 Final Configuration
 After the above tuning, the determined optimal hyperparameter combination is as follows:
